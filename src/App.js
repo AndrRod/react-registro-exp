@@ -9,7 +9,7 @@ import moment from "moment";
 import './App.css';
 
 function App() {
-  let url = "http://localhost:8080"
+  let url = "https://registro-exp.herokuapp.com"
 
   // --------------------------------------------------------------
   // login ---------------------------------------------------------------
