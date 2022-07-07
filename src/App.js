@@ -99,9 +99,7 @@ function App() {
     await axios.post(page ? page : url + "/file?page=0")
       .then(response => {
         setPrevPath(response.data.prevPath ? url + response.data.prevPath : null);
-        setNextPath(response.data.nextPath ? url + response.data.nextPath : null);
-        console.log(prevPath)
-        console.log(nextPath)
+        setNextPath(response.data.nextPath ? url + response.data.nextPath : null);        
         setGetFiles(response.data.content);
       }).catch(error => {
         console.log(error)
@@ -110,12 +108,8 @@ function App() {
   const requestGetdescr = async (page) => {
     await axios.post(page ? page : url + "/file?descr=0", desc)
       .then(response => {
-        console.log(response.data)
         setPrevPath(response.data.prevPath ? url + response.data.prevPath : null);
         setNextPath(response.data.nextPath ? url + response.data.nextPath : null);
-        console.log(prevPath)
-        console.log(nextPath)
-
         setGetFiles(response.data.content);
       }).catch(error => {
         console.log(error)
@@ -149,7 +143,6 @@ function App() {
     axios.get(url + "/file/" + id)
       .then(response => {
         setFile(response.data)
-        console.log(file)
       }).catch(error => {
         console.log(error)
       })
@@ -195,7 +188,6 @@ function App() {
   const requestDeleteById = (id) => {
     axios.delete(url + "/file/" + id)
       .then(response => {
-        console.log(response.data);
         modifModalDelete()
         requestGet();
       }).catch(error => {
@@ -217,7 +209,6 @@ function App() {
     const newFile = file;
     await axios.post(url + "/file/create", newFile)
       .then(response => {
-        console.log(response);
         modifModalAdd()
         requestGet();
       });
