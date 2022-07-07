@@ -297,8 +297,8 @@ function App() {
           <ModalBody>
             <div className='form-group' key={file.id}>
 
-              <label htmlFor='creationDate'></label><br />  Fecha Creacion: {" "}
-              <input type="date" name="creationDate" id="creationDate" defaultValue={modalEdit ? file.creationDate : ""} onChange={(e) => handleModifFile(e)} readOnly />
+              {/* <label htmlFor='creationDate'></label><br />  Fecha Creacion: {" "} */}
+              <input type="date" name="creationDate" id="creationDate" hidden defaultValue={modalEdit ? file.creationDate : ""} onChange={(e) => handleModifFile(e)} readOnly />
               <br />
               <br />
               <label htmlFor="numberFile">Número de epxediente</label>
@@ -309,7 +309,7 @@ function App() {
               <br />
 
               <label htmlFor='expirationDate'>Fecha de vencimiento:</label><br />  {" "}
-              <input type="date" name="expirationDate" id="expirationDate" min="2017-01-01" defaultValue={modalEdit ? file.expirationDate : ""} onChange={(e) => handleModifFile(e)} />
+              <input type="date" name="expirationDate" id="expirationDate" min="2002-01-01" defaultValue={modalEdit ? file.expirationDate : ""} onChange={(e) => handleModifFile(e)} />
               <br />
 
 
