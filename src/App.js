@@ -10,8 +10,21 @@ import './App.css';
 
 function App() {
   let url = "https://registro-exp.herokuapp.com"
+  // let url = "http://localhost:8080"
 
   // --------------------------------------------------------------
+  // error
+ 
+  const [error, setError] = useState(null)
+  const [modalError, setModalError] = useState(false)
+  const updateEstadeModalError = () => {
+    if (modalError=== false) {
+        setModalError(true);      
+    } else {
+      setModalError(false)
+    }
+  }
+
   // login ---------------------------------------------------------------
   const [bodyParameters, setBodyParameters] = useState({
     email: "",
@@ -28,12 +41,17 @@ function App() {
 
   const requestLogin = (bodyParm) => {
     const body = bodyParm;
+  
     axios.post(url + "/auth/login", body)
       .then(response => { 
         setIsLog(true)
         localStorage.setItem("userToken", JSON.stringify(response.data.access_Token));
         setAuthToken("Bearer " + JSON.parse(localStorage.getItem("userToken")))
         requestGet();
+      }).catch(error => {
+        setTimeout(() => {
+          setModalError(true)          
+        }, 200);
       })
   }
 
@@ -96,14 +114,17 @@ function App() {
 
   // desc? url + "/file?descr=0"  :
   const requestGet = async (page) => {
+    try{
     await axios.post(page ? page : url + "/file?page=0")
       .then(response => {
         setPrevPath(response.data.prevPath ? url + response.data.prevPath : null);
         setNextPath(response.data.nextPath ? url + response.data.nextPath : null);        
         setGetFiles(response.data.content);
-      }).catch(error => {
-        console.log(error)
-      })
+      })}
+      catch(err){
+        setError(err.response.data.message) 
+        setIsLog(false)
+      }
   }
   const requestGetdescr = async (page) => {
     await axios.post(page ? page : url + "/file?descr=0", desc)
@@ -243,6 +264,29 @@ function App() {
         </ul>
       </nav>
       <section class="ftco-section">
+         {/* modal error start */}
+
+         <Modal isOpen={modalError} >
+          <ModalHeader style={{ display: 'float' }}>
+            <button className='btn btn-outline-outline btn-sm-primary  ' style={{ float: 'right' }} onClick={() => { updateEstadeModalError() }} >x
+            </button>
+          </ModalHeader>
+          <ModalBody>
+
+            <div className='form-group'>
+
+              <h4>{error}</h4>
+            </div>
+
+          </ModalBody>
+          <ModalFooter>
+
+            <button className='btn btn-outline-danger btn-sm' onClick={() => {updateEstadeModalError()}}>Salir</button>
+
+          </ModalFooter>
+
+        </Modal>
+         {/* modal error */}
         {/* modal login start */}
 
         <Modal isOpen={modalLogin} >
@@ -370,19 +414,17 @@ function App() {
                     <tbody>
                       {getFiles && getFiles.map(
                         f => {
-                          return (
-
-                            <tr key={f.id}>
+                          return (                          
+                              <tr key={f.id}>
                               <th scope="row" class="scope" >{f.numberFile}</th>
                               <td>{f.title}</td>
-                              <td> {moment(f.creationDate).format("DD-MM-YYYY")}</td>
-                              <th scope="row" class="scope" >{moment(f.expirationDate).format("DD-MM-YYYY")}</th>
+                              <td> {f.creationDate? moment(f.creationDate).format("DD-MM-YYYY"): ""}</td>
+                              <th scope="row" class="scope" >{f.creationDate? moment(f.expirationDate).format("DD-MM-YYYY"): ""}</th>
                               <td>
-                                <a href="#" class="btn btn-primary" onClick={() => { reguestGetById(f.id); updateModalEdit(); }}>ACTUALIZAR</a> {"  "}
-                                <a href="#" class="btn btn-primary" onClick={() => { reguestGetById(f.id); modifModalDelete(); }}>BORRAR</a>
-
-                              </td>
-                            </tr>
+                                <a href="#" class="btn btn-primary" onClick={() => { reguestGetById(f.id); updateModalEdit(); }}>ACTUALIZAR</a> <br></br><br></br>
+                                <a href="#" class="btn btn-primary" onClick={() => { reguestGetById(f.id); modifModalDelete(); }}>BORRAR</a>                                
+                                </td>
+                                </tr>
                           )
                         })}
                       {getFiles.length ?
@@ -390,7 +432,7 @@ function App() {
                           {prevPath || desc.description && prevPath
                             ? <button className='btn btn-primary' onClick={() => { desc.description ? requestGetdescr(prevPath) : requestGet(prevPath); }}>Volver</button>
                             : <button className='btn btn-primary' onClick={() => { desc.description ? requestGetdescr(prevPath) : requestGet(prevPath); }} disabled>Volver</button>
-                          }
+                          }{" "}
                           {nextPath || desc.description && nextPath
                             ? <button className='btn btn-primary' onClick={() => { desc.description ? requestGetdescr(nextPath) : requestGet(nextPath); }}>Siguiente</button>
                             : <button className='btn btn-primary' onClick={() => { desc.description ? requestGetdescr(nextPath) : requestGet(nextPath); }} disabled> Siguiente</button>
