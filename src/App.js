@@ -349,7 +349,7 @@ function App() {
               <input className='form-control' type="text" name="numberFile" id="numberFile" defaultValue={modalEdit ? file.numberFile : ""} onChange={(p) => handleModifFile(p)} />
               <br />
               <label htmlFor="title">Carátula</label>
-              <input className='form-control' rows={4} type="text" name="title" id="title" defaultValue={modalEdit ? file.title : ""} onChange={(p) => handleModifFile(p)} />
+              <textarea className='form-control' rows={4} type="text" name="title" id="title" defaultValue={modalEdit ? file.title : ""} onChange={(p) => handleModifFile(p)} />
               <br />
 
               <label htmlFor='expirationDate'>Fecha de vencimiento:</label><br />  {" "}
