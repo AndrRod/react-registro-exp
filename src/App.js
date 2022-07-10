@@ -151,7 +151,8 @@ function App() {
     numberFile: "",
     title: "",
     expirationDate: "",
-    creationDate: ""
+    creationDate: "",
+    state:""
   });
   const handleModifFile = (f) => {
     setFile({
@@ -351,6 +352,9 @@ function App() {
               <label htmlFor="title">Carátula</label>
               <textarea className='form-control' rows={4} type="text" name="title" id="title" defaultValue={modalEdit ? file.title : ""} onChange={(p) => handleModifFile(p)} />
               <br />
+              <label htmlFor="state">Estado </label>
+              <input className='form-control' rows={4} type="text" name="state" id="state" defaultValue={modalEdit ? file.state : ""} onChange={(p) => handleModifFile(p)} />
+              <br />
 
               <label htmlFor='expirationDate'>Fecha de vencimiento:</label><br />  {" "}
               <input type="date" name="expirationDate" id="expirationDate" min="2002-01-01" defaultValue={modalEdit ? file.expirationDate : ""} onChange={(e) => handleModifFile(e)} />
@@ -408,6 +412,7 @@ function App() {
                         <th>CARATULA</th>
                         <th>FECHA DE AGREGADO</th>
                         <th>FECHA DE VENCIMIENTO</th>
+                        <th>ESTADO</th>
                         <th>CONFIG</th>
                       </tr>
                     </thead>
@@ -420,6 +425,7 @@ function App() {
                               <td>{f.title}</td>
                               <td> {f.creationDate? moment(f.creationDate).format("DD-MM-YYYY"): ""}</td>
                               <th scope="row" class="scope" >{f.creationDate? moment(f.expirationDate).format("DD-MM-YYYY"): ""}</th>
+                              <th scope="row" class="scope" >{f.state}</th>
                               <td>
                                 <a href="#" class="btn btn-primary" onClick={() => { reguestGetById(f.id); updateModalEdit(); }}>ACTUALIZAR</a> <br></br><br></br>
                                 <a href="#" class="btn btn-primary" onClick={() => { reguestGetById(f.id); modifModalDelete(); }}>BORRAR</a>                                
